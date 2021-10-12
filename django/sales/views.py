@@ -13,6 +13,5 @@ class SalesView(APIView):
 
     def get(self, request):
         db = Database('sample_supplies')
-        print(db)
         response = db.connection.sales.find()
         return HttpResponse(dumps((response)))
