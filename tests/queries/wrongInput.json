@@ -1,0 +1,96 @@
+[
+    {
+        "type": "querry",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },
+    {
+        "type": "query",
+        "param,s": {
+            "limit": 1
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },  
+    {
+        "type": "query",
+        "params": {
+            "limits": 1
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },  
+    {
+        "type": "query",
+        "params": {
+            "limit": "50"
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "2018"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "01-23-2018"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "1-1-2018"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "23-1-2018"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "1-23-18"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "saleDate": "2018-25-11"
+        }
+    }
+]
