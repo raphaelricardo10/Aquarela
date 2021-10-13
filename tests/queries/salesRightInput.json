@@ -1,0 +1,49 @@
+[
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": "1"
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": 1
+        },
+        "data": {
+        }
+    },
+    {
+        "type": "query",
+        "params": {
+            "limit": -1
+        },
+        "data": {
+            "storeLocation": "Seattle",
+            "items.name": "envelopes"
+        }
+    }
+]
