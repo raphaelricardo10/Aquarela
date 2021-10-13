@@ -4,42 +4,27 @@ from bson.json_util import dumps, loads
 from src.database import Database
 from bson.objectid import ObjectId
 from datetime import datetime
+from werkzeug.exceptions import HTTPException
 
 sales = Blueprint('sales', __name__)
-
 
 @sales.route("/sales", methods=['POST'])
 def post():
 
-    try:
-        db = Database('sample_supplies')
-    except Exception:
-        return Response({"Error": "Failed in connecting to the database. Try again later"}, status=500)
+    db = Database('sample_supplies')
 
     if request.json is None:
-        ret = Response(dumps(db.connection.sales.find()))
-    
-    elif 'type' not in request.json:
-        ret = Response({}, status=400)
+        return Response(dumps(db.connection.sales.find()))
 
-    elif request.json['type'] == 'query':
-        ret = query(db, request.json)
-
+    if request.json['type'] == 'query':
+        return query(db, request.json)
     else:
         #Other types not implemented
-        ret = Response({}, status=400)
-
-    return ret
+        raise ValueError("ERROR: Unsupported request type")
 
 def query(db, request):
 
     try:
-        if request is None:
-            request = {}
-
-        if not 'data' in request:
-            request['data'] = {}
-
         data = request['data']
 
         if 'saleDate' in data:
@@ -52,17 +37,15 @@ def query(db, request):
         if '_id' in data:
             data['_id'] = ObjectId(data['_id'])
 
-        if 'params' in request:
-            if 'limit' not in request['params']:
-                request['params']['limit'] = 0
-        else:
-            request['params'] = {}
+        for param in request['params']:
+            if param == 'limit':
+                request['params']['limit'] = int(request['params']['limit'])
+            else:
+                raise ValueError("ERROR: Unsupported parameter")
+
+        if 'limit' not in request['params']:
             request['params']['limit'] = 0
 
-    except Exception as e:
-        return Response(e, status=400)
-
-    try:
         response = dumps(db.connection.sales.find(data).limit(request['params']['limit']))
 
         if response == '[]':
@@ -70,5 +53,8 @@ def query(db, request):
 
         return Response(response, status=200)
 
-    except StopIteration:
-        return Response({"Warning": "The requested document was not found in database"}, status=204)
+    except KeyError as e:
+        raise KeyError(f"Unsupported key in JSON input")
+
+    except Exception as e:
+        raise
