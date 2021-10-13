@@ -28,16 +28,6 @@
             "storeLocation": "Seattle",
             "items.name": "envelopes"
         }
-    },  
-    {
-        "type": "query",
-        "params": {
-            "limit": "50"
-        },
-        "data": {
-            "storeLocation": "Seattle",
-            "items.name": "envelopes"
-        }
     },
     {
         "type": "query",
