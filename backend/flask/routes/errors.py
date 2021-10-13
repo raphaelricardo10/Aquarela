@@ -16,13 +16,13 @@ def handle_exception(e):
 @errors.app_errorhandler(ValueError)
 @errors.app_errorhandler(KeyError)
 def handle_input_error(e):
-    return e, 400
+    return str(e), 400
 
 @errors.app_errorhandler(ConnectionError)
 def handle_conn_error(e):
-    return Response(e, status=500)
+    return Response(str(e), status=500)
 
 @errors.app_errorhandler(StopIteration)
 def handle_empty_warning(e):
-    return Response(e, status=204)
+    return Response(str(e), status=204)
 
