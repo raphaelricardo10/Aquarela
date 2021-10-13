@@ -14,4 +14,4 @@ class TestRequestMethods(unittest.TestCase):
                 with self.subTest(query=query):
                     response = requests.post(url, json=query)
                     print(response.content)
-                    self.assertNotEqual(response.status_code, 200)
+                    self.assertEqual(response.status_code, 400)
