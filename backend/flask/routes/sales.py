@@ -6,53 +6,69 @@ from bson.objectid import ObjectId
 from datetime import datetime
 
 sales = Blueprint('sales', __name__)
+
+
 @sales.route("/sales", methods=['POST'])
-def get():
-    if request.method == 'POST':
-        r = request.json
+def post():
 
-        try:
-            db = Database('sample_supplies')
-        except Exception:
-            return Response({"Error": "Failed in connecting to the database. Try again later"}, status=500)
+    try:
+        db = Database('sample_supplies')
+    except Exception:
+        return Response({"Error": "Failed in connecting to the database. Try again later"}, status=500)
 
-        try:
-            if r is None:
-                r = {}
+    if request.json is None:
+        ret = Response(dumps(db.connection.sales.find()))
+    
+    elif 'type' not in request.json:
+        ret = Response({}, status=400)
 
-            if not 'data' in r:
-                r['data'] = {}
+    elif request.json['type'] == 'query':
+        ret = query(db, request.json)
 
+    else:
+        #Other types not implemented
+        ret = Response({}, status=400)
 
-            data = r['data']
+    return ret
 
-            if 'saleDate' in data:
-                date = datetime.strptime(data['saleDate'], '%Y-%m-%d')
-                data['saleDate'] = {
-                        "$gte": datetime(date.year, date.month, date.day, 0, 0, 0),
-                        "$lt": datetime(date.year, date.month, date.day, 23, 59, 59)
-                    }
+def query(db, request):
 
-            if '_id' in data:
-                data['_id'] = ObjectId(data['_id'])
+    try:
+        if request is None:
+            request = {}
 
-            if 'params' in r:
-                if 'limit' not in r['params']:
-                    r['params']['limit'] = 0
-            else:
-                r['params'] = {}
-                r['params']['limit'] = 0
+        if not 'data' in request:
+            request['data'] = {}
 
-        except Exception as e:
-            return Response(e, status=400)
+        data = request['data']
 
-        try:
-            response = dumps(db.connection.sales.find(data).limit(r['params']['limit']))
+        if 'saleDate' in data:
+            date = datetime.strptime(data['saleDate'], '%Y-%m-%d')
+            data['saleDate'] = {
+                "$gte": datetime(date.year, date.month, date.day, 0, 0, 0),
+                "$lt": datetime(date.year, date.month, date.day, 23, 59, 59)
+            }
 
-            if response == '[]':
-                raise StopIteration
+        if '_id' in data:
+            data['_id'] = ObjectId(data['_id'])
 
-            return Response(response, status=200)
+        if 'params' in request:
+            if 'limit' not in request['params']:
+                request['params']['limit'] = 0
+        else:
+            request['params'] = {}
+            request['params']['limit'] = 0
 
-        except StopIteration:
-            return Response({"Warning": "The requested document was not found in database"}, status=204)
+    except Exception as e:
+        return Response(e, status=400)
+
+    try:
+        response = dumps(db.connection.sales.find(data).limit(request['params']['limit']))
+
+        if response == '[]':
+            raise StopIteration
+
+        return Response(response, status=200)
+
+    except StopIteration:
+        return Response({"Warning": "The requested document was not found in database"}, status=204)
