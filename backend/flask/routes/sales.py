@@ -13,7 +13,7 @@ def post():
 
     db = Database('sample_supplies')
 
-    if request.json is None:
+    if request.json is None or request.json == {}:
         return Response(dumps(db.connection.sales.find()))
 
     if request.json['type'] == 'query':
