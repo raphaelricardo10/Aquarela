@@ -1,6 +1,5 @@
 import os
 from pymongo import MongoClient
-from pymongo.errors import CollectionInvalid
 
 class Database:
     def __init__(self, dbName=None) -> None:
@@ -23,7 +22,5 @@ class Database:
 
         self.connection = client[dbName]
 
-        try:
-            self.connection.validate_collection(dbName)
-        except CollectionInvalid:
-            raise
+        if dbName not in client.list_database_names():
+            raise ValueError(f"ERROR: Database {dbName} not found!!!")
