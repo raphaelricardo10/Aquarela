@@ -4,7 +4,6 @@ from bson.json_util import dumps, loads
 from src.database import Database
 from bson.objectid import ObjectId
 from datetime import datetime
-from werkzeug.exceptions import HTTPException
 
 sales = Blueprint('sales', __name__)
 
