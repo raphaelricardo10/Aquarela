@@ -1,8 +1,7 @@
 import unittest
 from backend.flask.src.database import Database
-from pymongo.errors import CollectionInvalid
 
-class TestSalesRequestMethods(unittest.TestCase):
+class TestDatabase(unittest.TestCase):
 
     def test_empty_db(self):
         self.assertEqual(Database().connection, None)
@@ -16,5 +15,5 @@ class TestSalesRequestMethods(unittest.TestCase):
                 Database('sample_supplies')
     
     def test_invalid_collection(self):
-        with self.assertRaises(CollectionInvalid):
+        with self.assertRaises(ValueError):
             Database('Invalid-name-15335413513')
