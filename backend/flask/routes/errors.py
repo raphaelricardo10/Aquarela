@@ -13,6 +13,8 @@ def handle_exception(e):
 
     return Response("Internal server error!!! Try again later.", status=500)
 
+
+#forward exceptions to HTTP client
 @errors.app_errorhandler(ValueError)
 @errors.app_errorhandler(KeyError)
 def handle_input_error(e):
